@@ -6,6 +6,7 @@ const uploadFile = async (file) => {
     formData.append('upload_preset', 'chat_app')
 
     const response = await fetch(url, {
+        method: 'post',
         body: formData
     })
     const responseData = await response.json()
