@@ -1,15 +1,12 @@
 import { useEffect, useState } from 'react'
-import { IoClose } from "react-icons/io5";
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import uploadFile from '../helpers/uploadFile';
 import axios from 'axios'
 import toast from 'react-hot-toast';
 import Avatar from '../components/Avatar';
-import { useDispatch } from 'react-redux'
-import { setToken, setUser } from '../redux/userSlice';
+import { useDispatch } from 'react-redux';
+import { setToken } from '../redux/userSlice';
 
 const CheckPasswordPage = () => {
-
     const [data, setData] = useState({
         password: "",
         userId: ""
@@ -19,7 +16,7 @@ const CheckPasswordPage = () => {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        if (!location.state.name) {
+        if (!location?.state?.name) {
             navigate('/email')
         }
     }, [])
@@ -56,7 +53,7 @@ const CheckPasswordPage = () => {
 
             if (response.data.success) {
                 dispatch(setToken(response?.data?.token))
-                localStorage.setItem("token", response?.data?.token)
+                localStorage.setItem('token', response?.data?.token)
 
                 setData({
                     password: "",
@@ -71,9 +68,12 @@ const CheckPasswordPage = () => {
 
     return (
         <div className='mt-5'>
-            <div className='bg-white w-full max-w-md  rounded overflow-hidden p-4 mx-auto'>
+            <div className='bg-white w-full max-w-md rounded overflow-hidden p-4 mx-auto'>
 
                 <div className='w-fit mx-auto mb-2 flex justify-center items-center flex-col'>
+                    {/* <PiUserCircle
+                  size={80}
+                /> */}
                     <Avatar
                         width={70}
                         height={70}
@@ -113,4 +113,5 @@ const CheckPasswordPage = () => {
         </div>
     )
 }
+
 export default CheckPasswordPage

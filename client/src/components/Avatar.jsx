@@ -34,12 +34,12 @@ const Avatar = ({ userId, name, imageUrl, width, height }) => {
         <div className={`text-slate-800  rounded-full font-bold relative`} style={{ width: width + "px", height: height + "px" }}>
             {
                 imageUrl ? (
-                    < img
+                    <img
                         src={imageUrl}
                         width={width}
                         height={height}
                         alt={name}
-                        className="overflow-hidden rounded-full"
+                        className='overflow-hidden rounded-full'
                     />
                 ) : (
                     name ? (

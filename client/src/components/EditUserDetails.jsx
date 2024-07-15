@@ -1,8 +1,12 @@
 import PropTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Avatar from './Avatar';
 import uploadFile from '../helpers/uploadFile'
 import Divider from './Divider';
+import axios from 'axios'
+import toast from 'react-hot-toast'
+import { useDispatch } from 'react-redux'
+import { setUser } from '../redux/userSlice'
 
 const EditUserDetails = ({ onClose, user }) => {
 
@@ -10,6 +14,9 @@ const EditUserDetails = ({ onClose, user }) => {
         name: user?.user,
         profile_pic: user?.profile_pic
     })
+
+    const uploadPhotoRef = useRef()
+    const dispatch = useDispatch()
 
     useEffect(() => {
         setData((prev) => {
@@ -48,6 +55,35 @@ const EditUserDetails = ({ onClose, user }) => {
     const handleSubmit = async (e) => {
         e.preventDefault()
         e.stopPropagation()
+
+        try {
+            const URL = `${import.meta.env.VITE_BACKEND_URL}/api/update-user`
+
+            const response = await axios({
+                method: 'post',
+                url: URL,
+                data: data,
+                withCredentials: true
+            })
+
+            toast.success(response?.data?.message)
+
+            if (response.data.success) {
+                dispatch(setUser(response.data.data))
+                onClose()
+            }
+
+        } catch (error) {
+            toast.error(error?.response?.data?.message)
+        }
+
+    }
+
+    const handleOpenUploadPhoto = (e) => {
+        e.preventDefault()
+        e.stopPropagation()
+
+        uploadPhotoRef.current.click()
     }
 
     return (
@@ -63,15 +99,22 @@ const EditUserDetails = ({ onClose, user }) => {
                     </div>
 
                     <div>
-                        <div className='my-1 flex items-center gap-3'>
-                            <Avatar width={40} height={40} imageUrl={data?.profile_pic} name={data?.name} />
+                        <div>Photo:</div>
+                        <div className='my-1 flex items-center gap-4'>
+                            <Avatar
+                                width={40}
+                                height={40}
+                                imageUrl={data?.profile_pic}
+                                name={data?.name}
+                            />
                             <label htmlFor='profile_pic'>
-                                <button className='font-semibold' >Change Photo</button>
+                                <button className='font-semibold' onClick={handleOpenUploadPhoto}>Change Photo</button>
                                 <input
                                     type='file'
                                     id='profile_pic'
                                     className='hidden'
                                     onChange={handleUploadPhoto}
+                                    ref={uploadPhotoRef}
                                 />
                             </label>
                         </div>
@@ -92,4 +135,4 @@ EditUserDetails.propTypes = {
     user: PropTypes.string,
 };
 
-export default React.memo(EditUserDetails)
+export default React.memo(EditUserDetails);
