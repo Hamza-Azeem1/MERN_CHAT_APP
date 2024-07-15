@@ -15,7 +15,7 @@ router.post('/password', checkPassword)
 router.get('/user-details', userDetails)
 router.get('/logout', logout)
 router.post('/update-user', updateUserDetails)
-router.get('/search-user', searchUser)
+router.post('/search-user', searchUser)
 
 
 module.exports = router

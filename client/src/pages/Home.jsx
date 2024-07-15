@@ -5,6 +5,7 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom"
 import { logout, setUser } from "../redux/userSlice"
 import Sidebar from "../components/Sidebar"
 import logo from '../assets/logo.png'
+import io from 'socket.io-client'
 
 const Home = () => {
 
@@ -16,7 +17,7 @@ const Home = () => {
     const fetchUserDetails = async () => {
         try {
             const URL = `${import.meta.env.VITE_BACKEND_URL}/api/user-details`
-            const response = await axios({
+            const response = await axios.get({
                 url: URL,
                 withCredentials: true
             })
@@ -35,6 +36,13 @@ const Home = () => {
     useEffect(() => {
         fetchUserDetails()
     }, [])
+
+
+    /**socket connection */
+    useEffect(() => {
+
+    }, [])
+
 
     const basePath = location.pathname === '/'
 
