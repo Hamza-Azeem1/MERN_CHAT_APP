@@ -30,10 +30,13 @@ export const userSlice = createSlice({
             state.profile_pic = ""
             state.token = ""
         },
+        setOnlineUser: (state, action) => {
+            state.onlineUser = action.payload
+        },
     },
 })
 
 // Action creators are generated for each case reducer function
-export const { setUser, setToken, logout } = userSlice.actions
+export const { setUser, setToken, logout, setOnlineUser } = userSlice.actions
 
 export default userSlice.reducer
