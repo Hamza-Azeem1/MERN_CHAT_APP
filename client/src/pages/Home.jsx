@@ -1,14 +1,13 @@
-import axios from "axios"
-import { useEffect } from "react"
-import { useDispatch, useSelector } from "react-redux"
-import { Outlet, useLocation, useNavigate } from "react-router-dom"
-import { logout, setOnlineUser, setSocketConnection, setUser } from "../redux/userSlice"
-import Sidebar from "../components/Sidebar"
+import axios from 'axios'
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Outlet, useLocation, useNavigate } from 'react-router-dom'
+import { logout, setOnlineUser, setSocketConnection, setUser } from '../redux/userSlice'
+import Sidebar from '../components/Sidebar'
 import logo from '../assets/logo.png'
 import io from 'socket.io-client'
 
 const Home = () => {
-
     const user = useSelector(state => state.user)
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -17,7 +16,7 @@ const Home = () => {
     const fetchUserDetails = async () => {
         try {
             const URL = `${import.meta.env.VITE_BACKEND_URL}/api/user-details`
-            const response = await axios.get({
+            const response = await axios({
                 url: URL,
                 withCredentials: true
             })
@@ -37,15 +36,13 @@ const Home = () => {
         fetchUserDetails()
     }, [])
 
-
-    /**socket connection */
+    /***socket connection */
     useEffect(() => {
         const socketConnection = io(import.meta.env.VITE_BACKEND_URL, {
             auth: {
                 token: localStorage.getItem('token')
-            }
+            },
         })
-
 
         socketConnection.on('onlineUser', (data) => {
             dispatch(setOnlineUser(data))
@@ -56,12 +53,10 @@ const Home = () => {
         return () => {
             socketConnection.disconnect()
         }
-
     }, [])
 
 
     const basePath = location.pathname === '/'
-
     return (
         <div className='grid lg:grid-cols-[300px,1fr] h-screen max-h-screen'>
             <section className={`bg-white ${!basePath && "hidden"} lg:block`}>
@@ -87,4 +82,5 @@ const Home = () => {
         </div>
     )
 }
+
 export default Home

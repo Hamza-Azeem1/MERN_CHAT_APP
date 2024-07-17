@@ -26,7 +26,7 @@ const Sidebar = () => {
                         />
                     </NavLink>
 
-                    <div title='add friend' className='w-12 h-12 flex justify-center items-center cursor-pointer hover:bg-slate-200 rounded' onClick={() => setOpenSearchUser(true)}>
+                    <div title='add friend' onClick={() => setOpenSearchUser(true)} className='w-12 h-12 flex justify-center items-center cursor-pointer hover:bg-slate-200 rounded' >
                         <FaUserPlus size={20} />
                     </div>
                 </div>
@@ -78,8 +78,7 @@ const Sidebar = () => {
                 )
             }
 
-
-            {/* search user */}
+            {/**search user */}
             {
                 openSearchUser && (
                     <SearchUser onClose={() => setOpenSearchUser(false)} />

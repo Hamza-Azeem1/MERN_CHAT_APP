@@ -14,13 +14,14 @@ async function updateUserDetails(request, response) {
             profile_pic
         })
 
-        const userInfo = await UserModel.findById(user._id)
+        const userInfomation = await UserModel.findById(user._id)
 
         return response.json({
-            message: "User Updated Successfully!",
-            data: userInfo,
+            message: "user update successfully",
+            data: userInfomation,
             success: true
         })
+
 
     } catch (error) {
         return response.status(500).json({
