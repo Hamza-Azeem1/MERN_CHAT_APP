@@ -1,9 +1,10 @@
-const mongoose = require("mongoose")
+
+const mongoose = require('mongoose')
 
 const messageSchema = new mongoose.Schema({
     text: {
         type: String,
-        defaut: ""
+        default: ""
     },
     imageUrl: {
         type: String,
@@ -16,6 +17,11 @@ const messageSchema = new mongoose.Schema({
     seen: {
         type: Boolean,
         default: false
+    },
+    msgByUserId: {
+        type: mongoose.Schema.ObjectId,
+        required: true,
+        ref: 'User'
     }
 }, {
     timestamps: true
@@ -27,7 +33,7 @@ const conversationSchema = new mongoose.Schema({
         required: true,
         ref: 'User'
     },
-    reciever: {
+    receiver: {
         type: mongoose.Schema.ObjectId,
         required: true,
         ref: 'User'
@@ -42,8 +48,8 @@ const conversationSchema = new mongoose.Schema({
     timestamps: true
 })
 
-const MessageModel = mongoose.model("Message", messageSchema)
-const ConversationModel = mongoose.model("Conversation", conversationSchema)
+const MessageModel = mongoose.model('Message', messageSchema)
+const ConversationModel = mongoose.model('Conversation', conversationSchema)
 
 module.exports = {
     MessageModel,
