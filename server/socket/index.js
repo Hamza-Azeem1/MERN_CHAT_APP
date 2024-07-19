@@ -143,7 +143,7 @@ io.on('connection', async (socket) => {
         io.to(msgByUserId).emit('conversation', conversationReceiver)
     })
 
-    //disconnect
+    //disconnect.
     socket.on('disconnect', () => {
         onlineUser.delete(user?._id?.toString())
     })

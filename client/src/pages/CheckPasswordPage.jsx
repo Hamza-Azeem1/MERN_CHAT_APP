@@ -68,7 +68,7 @@ const CheckPasswordPage = () => {
 
     return (
         <div className='mt-5'>
-            <div className='bg-white w-full max-w-md rounded overflow-hidden p-4 mx-auto'>
+            <div className='bg-white w-full max-w-md  rounded overflow-hidden p-4 mx-auto'>
 
                 <div className='w-fit mx-auto mb-2 flex justify-center items-center flex-col'>
                     {/* <PiUserCircle
