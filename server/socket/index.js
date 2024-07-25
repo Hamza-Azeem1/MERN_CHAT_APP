@@ -8,7 +8,6 @@ const getConversation = require('../helpers/getConversation');
 
 const app = express();
 
-/*** Socket connection */
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
@@ -17,16 +16,13 @@ const io = new Server(server, {
     }
 });
 
-// Online users set
 const onlineUser = new Set();
 
 io.on('connection', async (socket) => {
     const token = socket.handshake.auth.token;
 
-    // Current user details 
     const user = await getUserDetailsFromToken(token);
 
-    // Create a room
     socket.join(user?._id.toString());
     onlineUser.add(user?._id?.toString());
 
@@ -44,7 +40,6 @@ io.on('connection', async (socket) => {
         };
         socket.emit('message-user', payload);
 
-        // Get previous messages
         const getConversationMessage = await ConversationModel.findOne({
             "$or": [
                 { sender: user?._id, receiver: userId },
@@ -55,7 +50,6 @@ io.on('connection', async (socket) => {
         socket.emit('message', getConversationMessage?.messages || []);
     });
 
-    // New message
     socket.on('new message', async (data) => {
         let conversation = await ConversationModel.findOne({
             "$or": [
@@ -64,7 +58,6 @@ io.on('connection', async (socket) => {
             ]
         });
 
-        // If conversation is not available
         if (!conversation) {
             const createConversation = await ConversationModel({
                 sender: data?.sender,
@@ -95,7 +88,6 @@ io.on('connection', async (socket) => {
         io.to(data?.sender).emit('message', getConversationMessage?.messages || []);
         io.to(data?.receiver).emit('message', getConversationMessage?.messages || []);
 
-        // Send conversation
         const conversationSender = await getConversation(data?.sender);
         const conversationReceiver = await getConversation(data?.receiver);
 
@@ -103,14 +95,12 @@ io.on('connection', async (socket) => {
         io.to(data?.receiver).emit('conversation', conversationReceiver);
     });
 
-    // Sidebar
     socket.on('sidebar', async (currentUserId) => {
         const conversation = await getConversation(currentUserId);
 
         socket.emit('conversation', conversation);
     });
 
-    // Seen
     socket.on('seen', async (msgByUserId) => {
         let conversation = await ConversationModel.findOne({
             "$or": [
@@ -121,12 +111,11 @@ io.on('connection', async (socket) => {
 
         const conversationMessageId = conversation?.messages || [];
 
-        await MessageModel.updateMany(
+        const updateMessages = await MessageModel.updateMany(
             { _id: { "$in": conversationMessageId }, msgByUserId: msgByUserId },
             { "$set": { seen: true } }
         );
 
-        // Send conversation
         const conversationSender = await getConversation(user?._id?.toString());
         const conversationReceiver = await getConversation(msgByUserId);
 
@@ -134,7 +123,6 @@ io.on('connection', async (socket) => {
         io.to(msgByUserId).emit('conversation', conversationReceiver);
     });
 
-    // Disconnect
     socket.on('disconnect', () => {
         onlineUser.delete(user?._id?.toString());
     });

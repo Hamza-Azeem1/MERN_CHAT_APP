@@ -4,7 +4,7 @@ require('dotenv').config();
 const connectDB = require("./config/connectDB");
 const router = require("./routes/index");
 const cookieParser = require("cookie-parser");
-const { app, server } = require('./socket/index'); // Importing app and server from the socket file
+const { app, server } = require('./socket/index');
 
 const corsOptions = {
     origin: process.env.FRONTEND_URL,
