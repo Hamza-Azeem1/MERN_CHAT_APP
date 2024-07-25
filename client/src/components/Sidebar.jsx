@@ -26,7 +26,6 @@ const Sidebar = () => {
             socketConnection.emit('sidebar', user._id)
 
             socketConnection.on('conversation', (data) => {
-                console.log('conversation', data)
 
                 const conversationUserData = data.map((conversationUser) => {
                     if (conversationUser?.sender?._id === conversationUser?.receiver?._id) {
