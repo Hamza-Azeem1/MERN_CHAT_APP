@@ -6,10 +6,12 @@ const router = require("./routes/index");
 const cookieParser = require("cookie-parser");
 const { app, server } = require('./socket/index'); // Importing app and server from the socket file
 
-app.use(cors({
+const corsOptions = {
     origin: process.env.FRONTEND_URL,
-    credentials: true
-}));
+    credentials: true,
+};
+
+app.use(cors(corsOptions));
 
 app.use(express.json());
 app.use(cookieParser());
